@@ -29,7 +29,7 @@ class dot {
   }
 
   reset(){
-    this.x = windowWidth / 3;
+    this.x = windowWidth / 2;
     this.y = windowHeight / 2;
   }
 
