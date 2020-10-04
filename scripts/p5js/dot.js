@@ -3,7 +3,7 @@ class dot {
   constructor(c){
     this.c = c;
     this.d = this.getDiameter();
-    this.x = windowWidth / 3;
+    this.x = windowWidth / 2;
     this.y = windowHeight / 2;
   }
 
