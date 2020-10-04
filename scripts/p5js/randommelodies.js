@@ -3,9 +3,9 @@ let colors = [];
 let activem = 0;
 
 function setup() {
-  melodies[0] = loadSound('assets/audio/MelodíaA_0.mp3');
-  melodies[0] = loadSound('assets/audio/MelodíaA_1.mp3');
-  melodies[0] = loadSound('assets/audio/MelodíaA_2.mp3');
+  melodies[0] = loadSound('../../assets/audio/MelodíaA_0.mp3');
+  melodies[0] = loadSound('../../assets/audio/MelodíaA_1.mp3');
+  melodies[0] = loadSound('../../assets/audio/MelodíaA_2.mp3');
   colors[0] = color(22, 125, 180);
   colors[1] = color(180, 0, 125);
   colors[2] = color(250, 200, 0);
