@@ -3,9 +3,9 @@ let colors = [];
 let activem = 0;
 
 function preload() {
-  melodies[0] = loadSound('/matedulab/assets/audio/MelodyA_0.mp3');
-  melodies[1] = loadSound('/matedulab/assets/audio/MelodyA_1.mp3');
-  melodies[2] = loadSound('/matedulab/assets/audio/MelodyA_2.mp3');
+  melodies.push(new loadSound('/matedulab/assets/audio/MelodyA_0.mp3'));
+  melodies.push(new loadSound('/matedulab/assets/audio/MelodyA_1.mp3'));
+  melodies.push(new loadSound('/matedulab/assets/audio/MelodyA_2.mp3'));
 }
 
 function setup() {
