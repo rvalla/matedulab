@@ -1,5 +1,9 @@
-let speed = 3;
-let dotscount = 10;
+let speedV = 6;
+let maxXspeed = 3;
+let minXspeed = -3;
+let maxYspeed = 3;
+let minYspeed = -3;
+let dotscount = 20;
 let dots = [];
 let state = 0;
 
@@ -19,17 +23,11 @@ function draw() {
 }
 
 function getMX(){
-  return m = random(-speed,speed);
+  return random(minXspeed, maxXspeed);
 }
 
 function getMY(){
-  let m = 0;
-  if (state === 0){
-    m = random(-speed, speed) / 2;
-  } else {
-    m = random(-speed, speed / 2) / 2;
-  }
-  return m;
+  return random(minYspeed, maxYspeed);
 }
 
 function resetDots(){
@@ -38,16 +36,17 @@ function resetDots(){
   }
 }
 
-function changeState(){
-  if (state === 0){
-    state = 1;
-  } else {
-    state = 0;
-  }
+function mouseClicked() {
+  mapLimits(mouseX, mouseY);
 }
 
-function mouseClicked() {
-  changeState();
+function mapLimits(xl, yl){
+  minXspeed = map(xl, 0, windowWidth, -speedV, 0);
+  minYspeed = map(yl, 0, windowHeight, -speedV, 0);
+  maxXspeed = minXspeed + speedV;
+  maxYspeed = minYspeed + speedV;
+  print(minXspeed);
+  print(minYspeed);
 }
 
 function mouseDragged(){
