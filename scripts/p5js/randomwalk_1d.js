@@ -1,5 +1,4 @@
 let speedV = 6;
-let speedM = 2;
 let maxXspeed = 3;
 let minXspeed = -3;
 let dotscount = 20;
@@ -35,7 +34,7 @@ function mouseClicked() {
 }
 
 function mapLimit(xl){
-  minXspeed = map(xl, 0, windowWidth, -speedV, -speedM);
+  minXspeed = map(xl, 0, windowWidth, -speedV, 0);
   maxXspeed = minXspeed + speedV;
 }
 

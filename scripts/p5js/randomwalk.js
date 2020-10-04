@@ -1,5 +1,4 @@
 let speedV = 6;
-let speedM = 2;
 let maxXspeed = 3;
 let minXspeed = -3;
 let maxYspeed = 3;
@@ -41,12 +40,10 @@ function mouseClicked() {
 }
 
 function mapLimits(xl, yl){
-  minXspeed = map(xl, 0, windowWidth, -speedV, -speedM);
-  minYspeed = map(yl, 0, windowHeight, -speedV, -speedM);
+  minXspeed = map(xl, 0, windowWidth, -speedV, 0);
+  minYspeed = map(yl, 0, windowHeight, -speedV, 0);
   maxXspeed = minXspeed + speedV;
   maxYspeed = minYspeed + speedV;
-  print(minXspeed);
-  print(minYspeed);
 }
 
 function mouseDragged(){
