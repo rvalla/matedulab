@@ -20,8 +20,8 @@ function mousePressed() {
   if (melodies[activem].isPlaying()){
     melodies[activem].stop();
   } else {
-    activem = (activem + 1) % 3;
     background(colors[activem]);
     melodies[activem].play();
+    activem = (activem + 1) % 3;
   }
 }
