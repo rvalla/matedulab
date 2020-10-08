@@ -17,7 +17,7 @@ function setup() {
 }
 
 function mousePressed() {
-  if (melodies[activem].isPlaying()){
+  if (melodies[(activem - 1) % 3].isPlaying()){
     melodies[activem].stop();
   } else {
     background(colors[activem]);
