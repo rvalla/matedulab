@@ -17,11 +17,11 @@ function setup() {
 }
 
 function mousePressed() {
-  if (melodies[(activem - 1) % 3].isPlaying()){
+  if (melodies[activem].isPlaying()){
     melodies[activem].stop();
+    activem = (activem + 1) % 3;
   } else {
     background(colors[activem]);
     melodies[activem].play();
-    activem = (activem + 1) % 3;
   }
 }
