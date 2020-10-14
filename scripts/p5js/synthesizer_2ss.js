@@ -6,8 +6,8 @@ let signal_2 = new p5.Oscillator('sine');
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  signal_1.amp(0.5);
-  signal_2.amp(0.5);
+  signal_1.amp(0.4);
+  signal_2.amp(0.4);
   signal_1.start();
   signal_2.start();
 }
