@@ -38,7 +38,7 @@ function mapLimit(xl){
   maxXspeed = minXspeed + speedV;
 }
 
-function mouseDragged(){
+function doubleClicked(){
   for (let d = 0; d < dotscount; d++){
     dots[d].reset();
   }

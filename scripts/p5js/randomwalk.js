@@ -46,7 +46,7 @@ function mapLimits(xl, yl){
   maxYspeed = minYspeed + speedV;
 }
 
-function mouseDragged(){
+function doubleClicked(){
   for (let d = 0; d < dotscount; d++){
     dots[d].reset();
   }
