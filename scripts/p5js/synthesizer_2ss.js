@@ -6,6 +6,8 @@ let signal_2;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   getAudioContext().suspend();
+	signal_1 = new p5.Oscillator('sine');
+	signal_2 = new p5.Oscillator('sine');
   state = -1;
   lastclick = 0;
 }
@@ -22,11 +24,9 @@ function draw(){
 
 function mousePressed() {
   if (500 < millis() - lastclick) {
-    switch (state): {
+    switch (state) {
       case -1:
         userStartAudio();
-        signal_1 = new p5.Oscillator('sine');
-        signal_2 = new p5.Oscillator('sine');
         signal_1.amp(0.4);
         signal_2.amp(0.4);
         signal_1.start();

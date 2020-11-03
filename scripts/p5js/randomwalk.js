@@ -1,3 +1,5 @@
+let b;
+let lastclick;
 let speedV = 6;
 let maxXspeed = 3;
 let minXspeed = -3;
@@ -8,6 +10,8 @@ let dots = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+	lastclick = 0;
+	b = new button(width / 2, 7 * height / 8, getButtonR(), color(250, 230, 0), color(250, 5, 180), "", color(200));
   for (let d = 0; d < dotscount; d++){
     dots.push(new dot(getColor()));
   }
@@ -15,6 +19,7 @@ function setup() {
 
 function draw() {
   background(22, 125, 180, 30);
+	b.display(mouseX, mouseY);
   for (let d = 0; d < dotscount; d++){
     dots[d].update(getMX(), getMY());
     dots[d].display();
@@ -35,8 +40,17 @@ function resetDots(){
   }
 }
 
-function mouseClicked() {
-  mapLimits(mouseX, mouseY);
+function mousePressed(){
+	if (500 < millis() - lastclick) {
+    if (b.contains(mouseX, mouseY)) {
+			for (let d = 0; d < dotscount; d++){
+		    dots[d].reset();
+		  }
+		} else {
+			mapLimits(mouseX, mouseY);
+		}
+		lastclick = millis();
+  }
 }
 
 function mapLimits(xl, yl){
@@ -46,17 +60,19 @@ function mapLimits(xl, yl){
   maxYspeed = minYspeed + speedV;
 }
 
-function doubleClicked(){
-  for (let d = 0; d < dotscount; d++){
-    dots[d].reset();
-  }
-}
-
 function getColor(){
   let c = random();
   if (c < 0.5){
     return color(250, 230, 0);
   } else {
     return color(250, 5, 180);
+  }
+}
+
+function getButtonR() {
+  if (width > height) {
+    return round(height / 25);
+  } else {
+    return round(width / 20);
   }
 }
