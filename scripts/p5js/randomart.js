@@ -107,7 +107,7 @@ function startConfig(config) {
   } else {
     speedV = 6;
   }
-	number = Number(config.speed);
+	number = Number(config.time);
   if (typeof(number) === "number" && Number.isInteger(number)) {
     artTime = number;
   } else {
