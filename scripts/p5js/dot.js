@@ -18,6 +18,11 @@ class dot {
     this.y += my;
   }
 
+	updateP(cx, cy){
+		this.x = cx;
+		this.y = cy;
+	}
+
   getDiameter(){
     let d = 0;
     if (windowWidth > windowHeight){
