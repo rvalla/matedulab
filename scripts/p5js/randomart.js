@@ -37,7 +37,6 @@ function draw() {
 	  }
 		checkTime();
 	}
-	print(startTime);
 }
 
 function checkTime(){
