@@ -1,7 +1,7 @@
 let matedulab, banner, logosize, titlesize, leveltextsize, leveltextmargin, pointstextsize;
 let offsetw, offseth, titleoffset, framew, frameh, regionw, regionh, xcenter, ycenter, dicew, diceh, facew;
 let rock, paper, scissors, doubty, doubtf, doubtb;
-let title, levellabel, victory, defeat;
+let title, levellabel, victory, defeat, helpc, helpp;
 let lastclick, rolldelay;
 let level, blocklevels, game, gamestate, gsounds;
 let cdice, pdice, cface, pface, cpoints, ppoints;
@@ -63,6 +63,7 @@ function mousePressed(){
 				if (pface.contains(mouseX, mouseY)) {
 					play(0);
 				}
+				getScreen();
 				break;
 			case 1:
 				if (pdice.contains(mouseX, mouseY)) {
@@ -71,6 +72,7 @@ function mousePressed(){
 					play(0);
 					gamestate = 1;
 				}
+				getScreen();
 				break;
 			case 0:
 				cpoints = 0;
@@ -80,15 +82,17 @@ function mousePressed(){
 				cface.active = cdice.faces[game.throwDice()].active;
 				pface.active = pdice.faces[game.throwDice()].active;
 				gamestate = 1;
+				getScreen();
 			case -1:
 				userStartAudio();
 				gsounds = new gamesounds();
 				cdice.setFaces(game.getCDice(level));
 				pdice.setFaces(game.getPDice(level));
 				gamestate = 1;
+				getScreen();
+				printHelp();
 				break;
 		}
-		getScreen();
 		lastclick = millis();
   }
 }
@@ -188,6 +192,34 @@ function printResult() {
 	}
 }
 
+function printHelp() {
+	let diameter = regionw * 0.9;
+	let c1 = [0,0];
+	let c2 = [0,0];
+	let mh = (regionh / 2 - pface.s) / 4;
+	if (framew > frameh) {
+		c1[0] = offsetw + 3.5 * regionw;
+		c1[1] =	offseth + titleoffset + regionh / 2;
+		c2[0] = offsetw + 2.5 * regionw;
+		c2[1] = offseth + titleoffset + regionh / 4 + mh;
+	} else {
+		c1[0] = offsetw + 1.5 * regionw;
+		c1[1] =	offseth + titleoffset + regionh / 2;
+		c2[0] = offsetw + 0.5 * regionw;
+		c2[1] = offseth + titleoffset + 1.25 * regionh + 2 * mh;
+	}
+	fill(220, 190);
+	stroke(colors[5]);
+	strokeWeight(width / 150);
+	ellipse(c1[0], c1[1], diameter, diameter);
+	ellipse(c2[0], c2[1], diameter * 0.8, diameter * 0.8);
+	noStroke();
+	textSize(leveltextsize * 1.5);
+	fill(colors[0]);
+	text(helpc, c1[0], c1[1] + leveltextsize / 2);
+	text(helpp, c2[0], c2[1] + leveltextsize / 2);
+}
+
 function startConfig(config) {
 	gamestate = -1;
 	lastclick = 0;
@@ -237,7 +269,7 @@ function startConfig(config) {
   if (typeof(number) === "number" && Number.isInteger(number)) {
     rolldelay = number;
   } else {
-   	rolldelay = 175;
+   	rolldelay = 150;
   }
 	let string = config.lan;
   if (typeof string === "string" && string === "eng") {
@@ -245,11 +277,15 @@ function startConfig(config) {
 		levellabel = "Level: ";
 		victory = "You won!";
 		defeat = "You lost...";
+		helpc = "choose";
+		helpp = "play";
   } else {
 		title = "Piedra, Papel y Probabilidades";
 		levellabel = "Nivel: ";
 		victory = "¡Ganaste!";
 		defeat = "Perdiste...";
+		helpc = "elegí";
+		helpp = "jugá";
   }
 	string = config.blocked;
   if (typeof string === "string" && string === "false") {
