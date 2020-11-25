@@ -1,10 +1,9 @@
 let matedulab, banner, logosize, titlesize, leveltextsize, leveltextmargin, pointstextsize;
 let offsetw, offseth, titleoffset, framew, frameh, regionw, regionh, xcenter, ycenter, dicew, diceh, facew;
-let rock, paper, scissors;
-let title;
-let levellabel;
-let lastclick;
-let level, game, gamestate, gsounds;
+let rock, paper, scissors, doubty, doubtf, doubtb;
+let title, levellabel, victory, defeat;
+let lastclick, rolldelay;
+let level, blocklevels, game, gamestate, gsounds;
 let cdice, pdice, cface, pface, cpoints, ppoints;
 let fontb, font;
 let colors;
@@ -15,6 +14,9 @@ function preload() {
 	rock = loadImage('p5js/ppp/assets/img/stone.png');
 	paper = loadImage('p5js/ppp/assets/img/paper.png');
 	scissors = loadImage('p5js/ppp/assets/img/scissors.png');
+	doubty = loadImage('p5js/ppp/assets/img/doubt_y.png');
+	doubtf = loadImage('p5js/ppp/assets/img/doubt_f.png');
+	doubtb = loadImage('p5js/ppp/assets/img/doubt_b.png');
 	font = loadFont('p5js/ppp/assets/fonts/Comfortaa_Regular.ttf');
 	fontb = loadFont('p5js/ppp/assets/fonts/Comfortaa_Bold.ttf');
 }
@@ -40,6 +42,8 @@ function setup() {
 	displayBanner();
 	textAlign(CENTER, BOTTOM);
 	textFont(fontb);
+	print("MatEduLab: Rock, Paper & Probabilities");
+	print("version: 0.95");
 }
 
 function getScreen() {
@@ -55,25 +59,33 @@ function getScreen() {
 function mousePressed(){
 	if (300 < millis() - lastclick) {
 		switch (gamestate) {
-			case 1:
-				play();
+			case 2:
+				if (pface.contains(mouseX, mouseY)) {
+					play(0);
+				}
 				break;
-			case 0:
+			case 1:
 				if (pdice.contains(mouseX, mouseY)) {
 					pdice.setFaces(game.getPDice(level));
-				} else {
-					cpoints = 0;
-					ppoints = 0;
-					play();
+				} else if (pface.contains(mouseX, mouseY)) {
+					play(0);
 					gamestate = 1;
 				}
 				break;
+			case 0:
+				cpoints = 0;
+				ppoints = 0;
+				cdice.setFaces(game.getCDice(level));
+				pdice.setFaces(game.getPDice(level));
+				cface.active = cdice.faces[game.throwDice()].active;
+				pface.active = pdice.faces[game.throwDice()].active;
+				gamestate = 1;
 			case -1:
 				userStartAudio();
 				gsounds = new gamesounds();
 				cdice.setFaces(game.getCDice(level));
 				pdice.setFaces(game.getPDice(level));
-				gamestate = 0;
+				gamestate = 1;
 				break;
 		}
 		getScreen();
@@ -81,35 +93,52 @@ function mousePressed(){
   }
 }
 
-function play() {
-	let c = game.throwDice();
-	let p = game.throwDice();
-	let r = game.decide(cdice.faces[c].active, pdice.faces[p].active);
-	cface.active = cdice.faces[c].active;
-	pface.active = pdice.faces[p].active;
-	if (r === 1) {
-		ppoints += 1;
-		gsounds.playWin();
-		print
-	} else if (r === -1) {
-		cpoints += 1;
-		gsounds.playLose();
+function play(i) {
+	let c = 0;
+	let p = 0;
+	if (i < 6) {
+		if (i % 2 === 0) {
+			cface.active = (3 + random([0,1,2]));
+			pface.active = (3 + random([0,1,2]));
+		} else {
+			c = game.throwDice();
+			p = game.throwDice();
+			cface.active = cdice.faces[c].active;
+			pface.active = pdice.faces[p].active;
+		}
+		setTimeout(play, rolldelay, i + 1);
+		getScreen();
+	} else {
+		c = game.throwDice();
+		p = game.throwDice();
+		cface.active = cdice.faces[c].active;
+		pface.active = pdice.faces[p].active;
+		let r = game.decide(cdice.faces[c].active, pdice.faces[p].active);
+		if (r === 1) {
+			ppoints += 1;
+			gsounds.playWin();
+			print
+		} else if (r === -1) {
+			cpoints += 1;
+			gsounds.playLose();
+		}
+		getScreen();
+		checkLevel();
 	}
-	checkLevel();
 }
 
 function checkLevel() {
 	if (cpoints + ppoints === 7) {
 		if (ppoints > cpoints) {
 			level += 1;
-			cdice.setFaces(game.getCDice(level));
-			pdice.setFaces(game.getPDice(level));
-			cface.active = cdice.faces[game.throwDice()].active;
-			pface.active = pdice.faces[game.throwDice()].active;
+			if (blocklevels && level > 3) {
+				level = 1;
+			}
 			gamestate = 0;
 		} else {
 			gamestate = 0;
 		}
+		printResult();
 	}
 }
 
@@ -128,6 +157,34 @@ function printTexts() {
 	} else {
 		text(cpoints, offsetw + regionw / 2, titleoffset + 2 * regionh);
 		text(ppoints, offsetw + regionw + regionw / 2, titleoffset + 2 * regionh);
+	}
+}
+
+function printResult() {
+	if (cpoints > ppoints) {
+		fill(colors[4]);
+		stroke(colors[2]);
+		strokeWeight(width / 125);
+		rect(offsetw + framew / 4, offseth + frameh / 4, framew / 2, frameh / 2);
+		fill(colors[0]);
+		noStroke();
+		textSize(pointstextsize / 3);
+		text(defeat, offsetw + framew / 2, offseth + frameh / 2 - 20);
+		fill(colors[2]);
+		text(str(cpoints) + " - " + str(ppoints), offsetw + framew / 2, offseth + 5 * frameh / 8 + 20);
+		gsounds.playLose();
+	} else {
+		fill(colors[4]);
+		stroke(colors[2]);
+		strokeWeight(width / 125);
+		rect(offsetw + framew / 4, offseth + frameh / 4, framew / 2, frameh / 2);
+		fill(colors[0]);
+		noStroke();
+		textSize(pointstextsize / 3);
+		text(victory, offsetw + framew / 2, offseth + frameh / 2 - 20);
+		fill(colors[2]);
+		text(str(cpoints) + " - " + str(ppoints), offsetw + framew / 2, offseth + 5 * frameh / 8 + 20);
+		gsounds.playWin();
 	}
 }
 
@@ -176,13 +233,29 @@ function startConfig(config) {
   } else {
    	level = 1;
   }
+	number = Number(config.delay);
+  if (typeof(number) === "number" && Number.isInteger(number)) {
+    rolldelay = number;
+  } else {
+   	rolldelay = 175;
+  }
 	let string = config.lan;
   if (typeof string === "string" && string === "eng") {
     title = "Rock, Scissors & Probabilities";
 		levellabel = "Level: ";
+		victory = "You won!";
+		defeat = "You lost...";
   } else {
 		title = "Piedra, Papel y Probabilidades";
 		levellabel = "Nivel: ";
+		victory = "¡Ganaste!";
+		defeat = "Perdiste...";
+  }
+	string = config.blocked;
+  if (typeof string === "string" && string === "false") {
+    blocklevels = false;
+  } else {
+		blocklevels = true;
   }
 }
 
@@ -203,11 +276,11 @@ function buildDices() {
 		mh = (regionh - diceh) / 2;
 	}
 	if (framew > frameh) {
-		cdice = new dice(rock, paper, scissors, dicew, diceh, offsetw + mw, mh + offseth + titleoffset, 1);
-		pdice = new dice(rock, paper, scissors, dicew, diceh, offsetw + mw + 3 * regionw, mh + offseth + titleoffset, 1);
+		cdice = new dice([rock, paper, scissors], [doubty, doubtf, doubtb], dicew, diceh, offsetw + mw, mh + offseth + titleoffset, 1);
+		pdice = new dice([rock, paper, scissors], [doubty, doubtf, doubtb], dicew, diceh, offsetw + mw + 3 * regionw, mh + offseth + titleoffset, 1);
 	} else {
-		cdice = new dice(rock, paper, scissors, dicew, diceh, mw + offsetw, mh + offseth + titleoffset, 1);
-		pdice = new dice(rock, paper, scissors, dicew, diceh, mw + offsetw + regionw, mh + offseth + titleoffset, 1);
+		cdice = new dice([rock, paper, scissors], [doubty, doubtf, doubtb], dicew, diceh, mw + offsetw, mh + offseth + titleoffset, 1);
+		pdice = new dice([rock, paper, scissors], [doubty, doubtf, doubtb], dicew, diceh, mw + offsetw + regionw, mh + offseth + titleoffset, 1);
 	}
 }
 
@@ -221,11 +294,11 @@ function buildFaces() {
 		mh = (regionh - facew) / 4;
 	}
 	if (framew > frameh) {
-		cface = new diceface(rock, paper, scissors, facew, mw + regionw + offsetw, mh + offseth + titleoffset);
-		pface = new diceface(rock, paper, scissors, facew, mw + 2 * regionw + offsetw, mh + offseth + titleoffset);
+		cface = new diceface([rock, paper, scissors], [doubty, doubtf, doubtb], facew, mw + regionw + offsetw, mh + offseth + titleoffset);
+		pface = new diceface([rock, paper, scissors], [doubty, doubtf, doubtb], facew, mw + 2 * regionw + offsetw, mh + offseth + titleoffset);
 	} else {
-		cface = new diceface(rock, paper, scissors, facew, mw + offsetw, mh + offseth + regionh +  titleoffset);
-		pface = new diceface(rock, paper, scissors, facew, mw + regionw + offsetw, mh + offseth + regionh + titleoffset);
+		cface = new diceface([rock, paper, scissors], [doubty, doubtf, doubtb], facew, mw + offsetw, mh + offseth + regionh +  titleoffset);
+		pface = new diceface([rock, paper, scissors], [doubty, doubtf, doubtb], facew, mw + regionw + offsetw, mh + offseth + regionh + titleoffset);
 	}
 }
 

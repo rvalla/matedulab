@@ -1,6 +1,6 @@
 class dice {
 
-  constructor(rock, paper, scissors, dw, dh, cx, cy, layout){
+  constructor(thefaces, thedoubts, dw, dh, cx, cy, layout){
 		this.w = dw;
 		this.h = dh;
 		this.fs = this.w / 3;
@@ -8,7 +8,7 @@ class dice {
     this.x = cx;
     this.y = cy;
 		this.ly = layout;
-		this.createFaces(rock, paper, scissors);
+		this.createFaces(thefaces, thedoubts);
   }
 
   display(){
@@ -19,21 +19,22 @@ class dice {
 
 	contains(x, y) {
 		let answer = false;
-		if (x > this.x && y > this.y) {
-			if (x < this.x + this.w && y < this.y + this.h) {
-				answer =  true;
+		for (let i = 0; i < this.faces.length; i++) {
+			if (this.faces[i].contains(x, y) === true) {
+				answer = true;
+				break;
 			}
 		}
 		return answer;
   }
 
-	createFaces(rock, paper, scissors) {
-		this.faces.push(new diceface(rock, paper, scissors, this.fs, this.x, this.y + this.fs * this.ly));
-		this.faces.push(new diceface(rock, paper, scissors, this.fs, this.x + this.fs, this.y));
-		this.faces.push(new diceface(rock, paper, scissors, this.fs, this.x + this.fs, this.y + this.fs));
-		this.faces.push(new diceface(rock, paper, scissors, this.fs, this.x + this.fs, this.y + 2 * this.fs));
-		this.faces.push(new diceface(rock, paper, scissors, this.fs, this.x + this.fs, this.y + 3 * this.fs));
-		this.faces.push(new diceface(rock, paper, scissors, this.fs, this.x + 2 * this.fs, this.y  + this.fs * (3 - this.ly)));
+	createFaces(thefaces, thedoubts) {
+		this.faces.push(new diceface(thefaces, thedoubts, this.fs, this.x, this.y + this.fs * this.ly));
+		this.faces.push(new diceface(thefaces, thedoubts, this.fs, this.x + this.fs, this.y));
+		this.faces.push(new diceface(thefaces, thedoubts, this.fs, this.x + this.fs, this.y + this.fs));
+		this.faces.push(new diceface(thefaces, thedoubts, this.fs, this.x + this.fs, this.y + 2 * this.fs));
+		this.faces.push(new diceface(thefaces, thedoubts, this.fs, this.x + this.fs, this.y + 3 * this.fs));
+		this.faces.push(new diceface(thefaces, thedoubts, this.fs, this.x + 2 * this.fs, this.y  + this.fs * (3 - this.ly)));
 		for (let i = 0; i < this.faces.length; i++) {
 			this.faces[i].setActiveFace(0);
 		}
