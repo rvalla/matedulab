@@ -8,5 +8,6 @@ cambiar la tendencia.
 - **Melodías aleatorias**: para escuchar melodías generadas aleatoriamente y no tan aleatoriamente.  
 - **Sintetizador de dos señales**: un sintetizador que, según el lugar en el que hagas click, hace sonar
 dos señales que se llevan bien o no tan bien.  
+- **Piedra, Papel y Probabilidades**: el juego para nuestra propuesta para introducir *probabilidad* en el aula.  
 
 Probá los scripts en el [sitio](https://rvalla.github.io/matedulab).
