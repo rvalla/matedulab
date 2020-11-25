@@ -205,7 +205,7 @@ function printHelp() {
 	} else {
 		c1[0] = offsetw + 1.5 * regionw;
 		c1[1] =	offseth + titleoffset + regionh / 2;
-		c2[0] = offsetw + 0.5 * regionw;
+		c2[0] = offsetw + 1.5 * regionw;
 		c2[1] = offseth + titleoffset + 1.25 * regionh + 2 * mh;
 	}
 	fill(220, 190);
