@@ -61,6 +61,7 @@ function mousePressed(){
 		switch (gamestate) {
 			case 2:
 				if (pface.contains(mouseX, mouseY)) {
+					updateRollCount()
 					play(0);
 				}
 				getScreen();
@@ -69,6 +70,7 @@ function mousePressed(){
 				if (pdice.contains(mouseX, mouseY)) {
 					pdice.setFaces(game.getPDice(level));
 				} else if (pface.contains(mouseX, mouseY)) {
+					updateRollCount()
 					play(0);
 					gamestate = 1;
 				}
@@ -144,6 +146,10 @@ function checkLevel() {
 		}
 		printResult();
 	}
+}
+
+function updateRollCount() {
+	rollcount = 3 + round(random(6));
 }
 
 function printTexts() {
@@ -223,6 +229,7 @@ function printHelp() {
 function startConfig(config) {
 	gamestate = -1;
 	lastclick = 0;
+	rollcount = 6;
 	titlesize = map(width, 300, 1200, 20, 40);
 	leveltextsize = map(width, 300, 1200, 15, 30);
 	leveltextmargin = map(width, 300, 1200, 25, 40);

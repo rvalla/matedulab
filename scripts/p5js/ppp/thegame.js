@@ -2,7 +2,7 @@ class thegame {
 
   constructor(rock, paper, scissors, dw, dh, cx, cy, layout){
 		this.activedice = 0;
-		this.cdice = [[0,0,0,2,0,0],[2,0,2,2,0,2],[1,0,1,2,0,1]];
+		this.cdice = [[0,0,0,2,0,0],[2,0,2,2,0,2],[1,0,1,2,0,1],[2,0,1,1,0,2],[0,1,2,1,1,2]];
 		this.level1 = [[1,1,2,1,1,1],[1,0,1,1,1,1]];
 		this.level2 = [[0,0,2,0,0,0],[1,0,1,0,0,0]];
 		this.level3 = [[1,1,1,1,1,1],[2,2,2,2,2,2],[0,2,2,1,1,2]];
