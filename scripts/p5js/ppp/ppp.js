@@ -2,7 +2,7 @@ let matedulab, banner, logosize, titlesize, leveltextsize, leveltextmargin, poin
 let offsetw, offseth, titleoffset, framew, frameh, regionw, regionh, xcenter, ycenter, dicew, diceh, facew;
 let rock, paper, scissors, doubty, doubtf, doubtb;
 let title, levellabel, victory, defeat, helpc, helpp;
-let lastclick, rolldelay;
+let lastclick, rolldelay, rollcount;
 let level, blocklevels, game, gamestate, gsounds;
 let cdice, pdice, cface, pface, cpoints, ppoints;
 let fontb, font;
@@ -102,7 +102,7 @@ function mousePressed(){
 function play(i) {
 	let c = 0;
 	let p = 0;
-	if (i < 6) {
+	if (i < rollcount) {
 		if (i % 2 === 0) {
 			cface.active = (3 + random([0,1,2]));
 			pface.active = (3 + random([0,1,2]));
