@@ -72,7 +72,7 @@ function mousePressed(){
 				} else if (pface.contains(mouseX, mouseY)) {
 					updateRollCount()
 					play(0);
-					gamestate = 1;
+					gamestate = 2;
 				}
 				getScreen();
 				break;
@@ -85,6 +85,7 @@ function mousePressed(){
 				pface.active = pdice.faces[game.throwDice()].active;
 				gamestate = 1;
 				getScreen();
+				break;
 			case -1:
 				userStartAudio();
 				gsounds = new gamesounds();
