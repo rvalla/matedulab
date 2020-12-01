@@ -43,7 +43,7 @@ function setup() {
 	textAlign(CENTER, BOTTOM);
 	textFont(fontb);
 	print("MatEduLab: Rock, Paper & Probabilities");
-	print("version: 0.95");
+	print("version: 0.99");
 }
 
 function getScreen() {
@@ -68,7 +68,11 @@ function mousePressed(){
 				break;
 			case 1:
 				if (pdice.contains(mouseX, mouseY)) {
-					pdice.setFaces(game.getPDice(level));
+					if (level < 4) {
+						pdice.setFaces(game.getPDice(level));
+					} else {
+						pdice.changeFace();
+					}
 				} else if (pface.contains(mouseX, mouseY)) {
 					updateRollCount()
 					play(0);
@@ -138,8 +142,14 @@ function checkLevel() {
 	if (cpoints + ppoints === 7) {
 		if (ppoints > cpoints) {
 			level += 1;
-			if (blocklevels && level > 3) {
-				level = 1;
+			if (blocklevels) {
+				if (level > 3) {
+					level = 1;
+				}
+			} else {
+				if (level > 6) {
+					level = 6;
+				}
 			}
 			gamestate = 0;
 		} else {
@@ -296,10 +306,10 @@ function startConfig(config) {
 		helpp = "jugá";
   }
 	string = config.blocked;
-  if (typeof string === "string" && string === "false") {
-    blocklevels = false;
+  if (typeof string === "string" && string === "true") {
+    blocklevels = true;
   } else {
-		blocklevels = true;
+		blocklevels = false;
   }
 }
 

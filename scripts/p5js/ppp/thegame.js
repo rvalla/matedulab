@@ -41,7 +41,7 @@ class thegame {
 	}
 
 	getCDice(l) {
-		if (l < 4) {
+		if (l < 6) {
 			return this.cdice[l - 1];
 		} else {
 			return this.getRandomDice();

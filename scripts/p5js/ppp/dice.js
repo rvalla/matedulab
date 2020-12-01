@@ -5,6 +5,7 @@ class dice {
 		this.h = dh;
 		this.fs = this.w / 3;
 		this.faces = [];
+		this.activeface = 0;
     this.x = cx;
     this.y = cy;
 		this.ly = layout;
@@ -22,6 +23,7 @@ class dice {
 		for (let i = 0; i < this.faces.length; i++) {
 			if (this.faces[i].contains(x, y) === true) {
 				answer = true;
+				this.activeface = i;
 				break;
 			}
 		}
@@ -44,6 +46,10 @@ class dice {
 		for (let i = 0; i < 6; i++) {
 			this.faces[i].setActiveFace(newfaces[i]);
 		}
+	}
+
+	changeFace() {
+		this.faces[this.activeface].setActiveFace((this.faces[this.activeface].active + 1)%3);
 	}
 
 }
