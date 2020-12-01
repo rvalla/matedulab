@@ -10,4 +10,4 @@ cambiar la tendencia.
 dos señales que se llevan bien o no tan bien.  
 - **Piedra, Papel y Probabilidades**: el juego para nuestra propuesta para introducir *probabilidad* en el aula.  
 
-Probá los scripts en el [sitio](https://rvalla.github.io/matedulab).
+Probá los scripts en el [sitio beta](https://rvalla.github.io/matedulab).
