@@ -1,7 +1,7 @@
 let matedulab, banner, logosize, titlesize, leveltextsize, leveltextmargin, pointstextsize;
 let offsetw, offseth, titleoffset, framew, frameh, regionw, regionh, xcenter, ycenter, dicew, diceh, facew;
 let rock, paper, scissors, doubty, doubtf, doubtb;
-let title, levellabel, victory, defeat, helpc, helpp;
+let title, levellabel, victory, defeat, championship, helpc, helpp;
 let lastclick, rolldelay, rollcount;
 let level, blocklevels, game, gamestate, gsounds;
 let cdice, pdice, cface, pface, cpoints, ppoints;
@@ -43,7 +43,7 @@ function setup() {
 	textAlign(CENTER, BOTTOM);
 	textFont(fontb);
 	print("MatEduLab: Rock, Paper & Probabilities");
-	print("version: 0.99");
+	print("version: 1.00");
 }
 
 function getScreen() {
@@ -84,10 +84,16 @@ function mousePressed(){
 				cpoints = 0;
 				ppoints = 0;
 				cdice.setFaces(game.getCDice(level));
-				pdice.setFaces(game.getPDice(level));
+				if (level < 5) {
+					pdice.setFaces(game.getPDice(level));
+				}
 				cface.active = cdice.faces[game.throwDice()].active;
 				pface.active = pdice.faces[game.throwDice()].active;
-				gamestate = 1;
+				if (level < 5) {
+					gamestate = 1;
+				} else {
+					gamestate = 2;
+				}
 				getScreen();
 				break;
 			case -1:
@@ -142,20 +148,25 @@ function checkLevel() {
 	if (cpoints + ppoints === 7) {
 		if (ppoints > cpoints) {
 			level += 1;
-			if (blocklevels) {
-				if (level > 3) {
-					level = 1;
-				}
+			if (level > 8) {
+				level = 4;
+				printChampionship();
 			} else {
-				if (level > 6) {
-					level = 6;
+				if (blocklevels) {
+					if (level > 3) {
+						level = 1;
+					}
 				}
+				printVictory();
 			}
 			gamestate = 0;
 		} else {
+			if (level > 4) {
+				level = 4;
+			}
+			printDefeat();
 			gamestate = 0;
 		}
-		printResult();
 	}
 }
 
@@ -173,40 +184,54 @@ function printTexts() {
 	textSize(pointstextsize);
 	fill(colors[2]);
 	if (framew > frameh) {
-		text(cpoints, offsetw + regionw + regionw / 2, titleoffset + regionh);
-		text(ppoints, offsetw + 2 * regionw + regionw / 2, titleoffset + regionh);
+		text(cpoints, offsetw + regionw + regionw / 2, offseth + titleoffset + regionh);
+		text(ppoints, offsetw + 2 * regionw + regionw / 2, offseth + titleoffset + regionh);
 	} else {
 		text(cpoints, offsetw + regionw / 2, titleoffset + 2 * regionh);
 		text(ppoints, offsetw + regionw + regionw / 2, titleoffset + 2 * regionh);
 	}
 }
 
-function printResult() {
-	if (cpoints > ppoints) {
-		fill(colors[4]);
-		stroke(colors[2]);
-		strokeWeight(width / 125);
-		rect(offsetw + framew / 4, offseth + frameh / 4, framew / 2, frameh / 2);
-		fill(colors[0]);
-		noStroke();
-		textSize(pointstextsize / 3);
-		text(defeat, offsetw + framew / 2, offseth + frameh / 2 - 20);
-		fill(colors[2]);
-		text(str(cpoints) + " - " + str(ppoints), offsetw + framew / 2, offseth + 5 * frameh / 8 + 20);
-		gsounds.playLose();
-	} else {
-		fill(colors[4]);
-		stroke(colors[2]);
-		strokeWeight(width / 125);
-		rect(offsetw + framew / 4, offseth + frameh / 4, framew / 2, frameh / 2);
-		fill(colors[0]);
-		noStroke();
-		textSize(pointstextsize / 3);
-		text(victory, offsetw + framew / 2, offseth + frameh / 2 - 20);
-		fill(colors[2]);
-		text(str(cpoints) + " - " + str(ppoints), offsetw + framew / 2, offseth + 5 * frameh / 8 + 20);
-		gsounds.playWin();
-	}
+function printDefeat() {
+	fill(colors[4]);
+	stroke(colors[2]);
+	strokeWeight(width / 125);
+	rect(offsetw + framew / 4, offseth + frameh / 4, framew / 2, frameh / 2);
+	fill(colors[0]);
+	noStroke();
+	textSize(pointstextsize / 3);
+	text(defeat, offsetw + framew / 2, offseth + frameh / 2 - 20);
+	fill(colors[2]);
+	text(str(cpoints) + " - " + str(ppoints), offsetw + framew / 2, offseth + 5 * frameh / 8 + 20);
+	gsounds.playLose();
+}
+
+function printVictory() {
+	fill(colors[4]);
+	stroke(colors[2]);
+	strokeWeight(width / 125);
+	rect(offsetw + framew / 4, offseth + frameh / 4, framew / 2, frameh / 2);
+	fill(colors[0]);
+	noStroke();
+	textSize(pointstextsize / 3);
+	text(victory, offsetw + framew / 2, offseth + frameh / 2 - 20);
+	fill(colors[2]);
+	text(str(cpoints) + " - " + str(ppoints), offsetw + framew / 2, offseth + 5 * frameh / 8 + 20);
+	gsounds.playWin();
+}
+
+function printChampionship() {
+	fill(colors[4]);
+	stroke(colors[2]);
+	strokeWeight(width / 125);
+	rect(offsetw + framew / 4, offseth + frameh / 4, framew / 2, frameh / 2);
+	fill(colors[0]);
+	noStroke();
+	textSize(pointstextsize / 3.2);
+	text(championship, offsetw + framew / 2, offseth + frameh / 2 + 20);
+	fill(colors[2]);
+	text(str(cpoints) + " - " + str(ppoints), offsetw + framew / 2, offseth + 5 * frameh / 8 + 20);
+	gsounds.playWin();
 }
 
 function printHelp() {
@@ -244,7 +269,7 @@ function startConfig(config) {
 	titlesize = map(width, 300, 1200, 20, 40);
 	leveltextsize = map(width, 300, 1200, 15, 30);
 	leveltextmargin = map(width, 300, 1200, 25, 40);
-	if (width > height) {
+	if (width >= height) {
 		if (height >= width * 0.5625) {
 			framew = width;
 			frameh = framew * 0.5625;
@@ -287,7 +312,7 @@ function startConfig(config) {
   if (typeof(number) === "number" && Number.isInteger(number)) {
     rolldelay = number;
   } else {
-   	rolldelay = 150;
+   	rolldelay = 125;
   }
 	let string = config.lan;
   if (typeof string === "string" && string === "eng") {
@@ -295,6 +320,7 @@ function startConfig(config) {
 		levellabel = "Level: ";
 		victory = "You won!";
 		defeat = "You lost...";
+		championship = "You are the\nchampion!";
 		helpc = "choose";
 		helpp = "play";
   } else {
@@ -302,6 +328,7 @@ function startConfig(config) {
 		levellabel = "Nivel: ";
 		victory = "¡Ganaste!";
 		defeat = "Perdiste...";
+		championship = "¡Sos\ninvencible!";
 		helpc = "elegí";
 		helpp = "jugá";
   }
