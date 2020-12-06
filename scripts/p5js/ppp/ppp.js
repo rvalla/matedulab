@@ -107,7 +107,7 @@ function mousePressed(){
 				break;
 		}
 		lastclick = millis();
-  }
+	}
 }
 
 function play(i) {
